@@ -1,0 +1,739 @@
+/* ==================== CSS Variables & Reset ==================== */
+:root {
+    --primary: #FF6B9D;
+    --primary-dark: #E91E63;
+    --secondary: #FF8A80;
+    --accent: #FFD700;
+    --bg-dark: #1a1a2e;
+    --bg-darker: #16213e;
+    --text-light: #FFF5F7;
+    --text-muted: #B8A9C9;
+    --card-bg: rgba(255, 255, 255, 0.1);
+    --glass: rgba(255, 255, 255, 0.15);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 20px rgba(255, 107, 157, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-darker) 50%, #0f0f23 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    position: relative;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ==================== Dev Controls ==================== */
+#dev-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+}
+
+#toggle-dev {
+    background: var(--glass);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    backdrop-filter: blur(10px);
+}
+
+#dev-panel {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: var(--bg-darker);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    min-width: 200px;
+}
+
+#dev-panel label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+#dev-panel select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    background: var(--bg-dark);
+    color: var(--text-light);
+    font-family: inherit;
+}
+
+/* ==================== Floating Hearts Background ==================== */
+#hearts-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.3;
+    animation: float-up 8s linear infinite;
+}
+
+@keyframes float-up {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.3;
+    }
+
+    90% {
+        opacity: 0.3;
+    }
+
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ==================== Day Sections ==================== */
+.day-section {
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.content-wrapper {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.day-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 107, 157, 0.3);
+    animation: title-glow 2s ease-in-out infinite alternate;
+    line-height: 1.3;
+}
+
+@keyframes title-glow {
+    from {
+        filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.5));
+    }
+
+    to {
+        filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.8));
+    }
+}
+
+.instruction {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.visit-reminder {
+    text-align: center;
+    color: var(--primary);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+/* ==================== Buttons ==================== */
+.btn {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-glow);
+    display: inline-block;
+}
+
+.btn:hover,
+.btn:active {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 107, 157, 0.6);
+}
+
+/* ==================== ROSE DAY STYLES ==================== */
+#rose-day .drew-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('Pokemon-Drew.avif');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 20px auto;
+    max-width: 350px;
+}
+
+.memory-card {
+    aspect-ratio: 1;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.memory-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+    border-radius: 12px;
+}
+
+.memory-card.flipped .memory-card-inner {
+    transform: rotateY(180deg);
+}
+
+.memory-card.matched .memory-card-inner {
+    transform: rotateY(180deg);
+    animation: matched-pulse 0.5s ease;
+}
+
+@keyframes matched-pulse {
+
+    0%,
+    100% {
+        transform: rotateY(180deg) scale(1);
+    }
+
+    50% {
+        transform: rotateY(180deg) scale(1.1);
+    }
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.card-back {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-back::after {
+    content: '🌹';
+    opacity: 0.5;
+}
+
+.card-front {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    transform: rotateY(180deg);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#fail-counter {
+    text-align: center;
+    margin: 15px 0;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #ff0044 0%, #ff3366 100%);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255, 0, 68, 0.8), 0 0 60px rgba(255, 0, 68, 0.5);
+    animation: skill-issue-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes skill-issue-pulse {
+    from {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(255, 0, 68, 0.8), 0 0 60px rgba(255, 0, 68, 0.5);
+    }
+
+    to {
+        transform: scale(1.05);
+        box-shadow: 0 0 40px rgba(255, 0, 68, 1), 0 0 80px rgba(255, 0, 68, 0.7);
+    }
+}
+
+#fail-text {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+#restart-btn {
+    display: block;
+    margin: 20px auto;
+}
+
+/* Win Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 100%);
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 350px;
+    width: 100%;
+    box-shadow: var(--shadow), 0 0 50px rgba(255, 107, 157, 0.3);
+    border: 1px solid var(--glass);
+    animation: modal-pop 0.5s ease;
+}
+
+@keyframes modal-pop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.win-message {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.sub-message {
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.love-message {
+    font-size: 1.3rem;
+    color: var(--accent);
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+/* ==================== PROPOSE DAY STYLES ==================== */
+#propose-day .mii-boat-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('mii-boat.jpeg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.propose-content {
+    padding-top: 40px;
+}
+
+.happy-message {
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.intro-text {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.proposals {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.proposal-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+}
+
+.proposal-text {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.proposal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.yes-btn {
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+}
+
+.no-btn {
+    background: linear-gradient(135deg, #757575 0%, #424242 100%);
+}
+
+.wrong-answer {
+    color: var(--secondary);
+    text-align: center;
+    margin-top: 15px;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+.accepted {
+    color: #4CAF50;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.proposal-card.completed {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.proposal-card.completed .proposal-buttons {
+    display: none;
+}
+
+/* ==================== CHOCOLATE DAY STYLES ==================== */
+.choco-content {
+    padding-top: 30px;
+}
+
+.choco-memory {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.choco-wish {
+    text-align: center;
+    color: var(--accent);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+#choco-game-area {
+    text-align: center;
+}
+
+#score-display {
+    font-size: 1.5rem;
+    margin: 15px 0;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+#choco-arena {
+    width: 100%;
+    height: 400px;
+    background: var(--glass);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    touch-action: manipulation;
+}
+
+.falling-chocolate {
+    position: absolute;
+    font-size: 2.5rem;
+    cursor: pointer;
+    animation: fall linear forwards;
+    transition: transform 0.1s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.falling-chocolate:active {
+    transform: scale(1.3);
+}
+
+@keyframes fall {
+    0% {
+        top: -50px;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.caught {
+    animation: caught 0.3s ease forwards !important;
+}
+
+@keyframes caught {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+#choco-results {
+    text-align: center;
+    padding: 30px;
+}
+
+#choco-results h2 {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.final-score {
+    font-size: 1.3rem;
+    color: var(--accent);
+    margin-bottom: 25px;
+}
+
+#start-choco-game {
+    margin-top: 20px;
+}
+
+/* ==================== TEDDY DAY STYLES ==================== */
+.teddy-content {
+    padding-top: 30px;
+}
+
+.teddy-thanks {
+    text-align: center;
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.pudge-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.pudge-img-wrapper {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.pudge-img-wrapper:hover,
+.pudge-img-wrapper:active {
+    transform: scale(1.05);
+}
+
+.pudge-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.pudge-tagline {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 25px;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* ==================== PLACEHOLDER DAYS ==================== */
+.placeholder-content {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.placeholder-text {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.placeholder-sub {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* ==================== NOT YET PAGE ==================== */
+#not-yet .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    text-align: center;
+}
+
+.not-yet-text {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+.countdown-text {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+/* ==================== Confetti ==================== */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: confetti-fall 3s linear forwards;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ==================== Responsive ==================== */
+@media (max-width: 400px) {
+    .day-title {
+        font-size: 1.8rem;
+    }
+
+    .game-grid {
+        gap: 6px;
+    }
+
+    .card-front,
+    .card-back {
+        font-size: 1.6rem;
+    }
+
+    .proposal-text {
+        font-size: 1rem;
+    }
+
+    .btn {
+        padding: 10px 25px;
+        font-size: 0.95rem;
+    }
+}
