@@ -653,6 +653,221 @@ body {
     line-height: 1.5;
 }
 
+/* ==================== PROMISE DAY STYLES ==================== */
+.promise-content {
+    padding-top: 30px;
+}
+
+.parchment {
+    background: linear-gradient(135deg, #f4e4c1 0%, #e8d5a3 30%, #d4c088 70%, #c4a862 100%);
+    border-radius: 12px;
+    padding: 4px;
+    margin: 20px 0;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(139, 90, 43, 0.3);
+    position: relative;
+}
+
+.parchment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    border-radius: 12px;
+    pointer-events: none;
+}
+
+.parchment-inner {
+    background: linear-gradient(180deg, #f8ecd4 0%, #f0dfc0 50%, #e8d5a3 100%);
+    border-radius: 10px;
+    padding: 25px 20px;
+    position: relative;
+}
+
+.parchment-title {
+    font-family: 'Dancing Script', cursive;
+    color: #5c3d1a;
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.promise-card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-bottom: 1px dashed rgba(92, 61, 26, 0.3);
+    transition: opacity 0.3s ease;
+}
+
+.promise-card:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.promise-card.locked {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.promise-card.completed {
+    opacity: 0.7;
+}
+
+.promise-card.completed .promise-buttons {
+    display: none;
+}
+
+.promise-text {
+    color: #3d2b1a;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.promise-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.promise-btn {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+}
+
+.promise-wrong {
+    color: #b71c1c;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 500;
+    animation: shake 0.5s ease;
+}
+
+.promise-accepted {
+    color: #2e7d32;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* ==================== HUG DAY STYLES ==================== */
+.hug-content {
+    padding-top: 30px;
+    text-align: center;
+}
+
+#hug-meter-container {
+    margin: 25px 0;
+    text-align: center;
+}
+
+#hug-meter-bar {
+    width: 100%;
+    height: 30px;
+    background: var(--glass);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow);
+}
+
+#hug-meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--primary) 0%, #ff4081 50%, var(--accent) 100%);
+    border-radius: 13px;
+    transition: width 0.2s ease;
+    box-shadow: 0 0 15px rgba(255, 107, 157, 0.6);
+}
+
+#hug-meter-label {
+    display: block;
+    margin-top: 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+#hug-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.hug-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow);
+}
+
+.hug-btn:active {
+    transform: scale(0.9);
+}
+
+.hug-btn.glowing {
+    border-color: var(--accent);
+    background: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.4);
+    animation: glow-pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes glow-pulse {
+    from {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 0 50px rgba(255, 215, 0, 0.4);
+    }
+
+    to {
+        box-shadow: 0 0 35px rgba(255, 215, 0, 1), 0 0 70px rgba(255, 215, 0, 0.6);
+    }
+}
+
+.hug-btn.wrong-tap {
+    animation: wrong-shake 0.3s ease;
+    border-color: #ff0044;
+    background: rgba(255, 0, 68, 0.3);
+}
+
+@keyframes wrong-shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+.hug-reward-img {
+    width: 100%;
+    max-width: 280px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.hug-modal-content {
+    max-width: 400px;
+}
+
 /* ==================== PLACEHOLDER DAYS ==================== */
 .placeholder-content {
     text-align: center;

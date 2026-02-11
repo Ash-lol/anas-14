@@ -13,19 +13,18 @@ function getCurrentDay() {
         return parseInt(override);
     }
     const germanyDate = getGermanyDate();
-    // Check if it's February
-    if (germanyDate.getMonth() === 1) { // February is month 1 (0-indexed)
+    if (germanyDate.getMonth() === 1) {
         return germanyDate.getDate();
     }
-    return -1; // Not February
+    return -1;
 }
 
 // ==================== Page Routing ====================
 function showDay(day) {
-    // Hide all sections
     document.querySelectorAll('.day-section').forEach(section => {
         section.classList.add('hidden');
     });
+    stopHugGame();
 
     let sectionId;
     switch (day) {
@@ -45,7 +44,13 @@ function showDay(day) {
             sectionId = 'teddy-day';
             break;
         case 11:
+            sectionId = 'promise-day';
+            initPromiseDay();
+            break;
         case 12:
+            sectionId = 'hug-day';
+            initHugDay();
+            break;
         case 13:
         case 14:
             sectionId = 'placeholder-day';
@@ -60,9 +65,7 @@ function showDay(day) {
 
 function updatePlaceholder(day) {
     const titles = {
-        11: '💕 Feb 11 💕',
-        12: '💋 Kiss Day 💋',
-        13: '🤗 Hug Day 🤗',
+        13: '💋 Kiss Day 💋',
         14: '❤️ Valentine\'s Day ❤️'
     };
     document.getElementById('placeholder-title').textContent = titles[day] || '💕';
@@ -100,9 +103,7 @@ function initMemoryGame() {
     consecutiveFails = 0;
     canFlip = true;
 
-    // Create pairs
     const pairs = [...ROSE_EMOJIS, ...ROSE_EMOJIS];
-    // Shuffle using Fisher-Yates
     for (let i = pairs.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
@@ -253,9 +254,8 @@ function handleProposalNo(e) {
     const wrongAnswer = card.querySelector('.wrong-answer');
     wrongAnswer.classList.remove('hidden');
 
-    // Re-trigger animation
     wrongAnswer.style.animation = 'none';
-    wrongAnswer.offsetHeight; // Trigger reflow
+    wrongAnswer.offsetHeight;
     wrongAnswer.style.animation = null;
 }
 
@@ -310,7 +310,7 @@ function spawnChocolates() {
     const arenaWidth = arena.offsetWidth;
     chocolate.style.left = (Math.random() * (arenaWidth - 50)) + 'px';
 
-    const fallDuration = 2 + Math.random() * 2; // 2-4 seconds
+    const fallDuration = 2 + Math.random() * 2;
     chocolate.style.animationDuration = fallDuration + 's';
 
     chocolate.addEventListener('click', (e) => catchChocolate(e, chocolate));
@@ -322,15 +322,13 @@ function spawnChocolates() {
     arena.appendChild(chocolate);
     chocolatesSpawned++;
 
-    // Remove chocolate when it falls off screen
     setTimeout(() => {
         if (chocolate.parentNode) {
             chocolate.remove();
         }
     }, fallDuration * 1000);
 
-    // Spawn next chocolate
-    const nextSpawnDelay = 400 + Math.random() * 600; // 400-1000ms
+    const nextSpawnDelay = 400 + Math.random() * 600;
     setTimeout(spawnChocolates, nextSpawnDelay);
 }
 
@@ -359,11 +357,212 @@ function endChocolateGame() {
     }
 }
 
-// ==================== Dev Controls (REMOVED FOR PRODUCTION) ====================
-// Dev controls have been removed for deployment
+// ==================== PROMISE DAY ====================
+let promisesCompleted = 0;
+
+function initPromiseDay() {
+    promisesCompleted = 0;
+
+    document.querySelectorAll('.promise-card').forEach((card, index) => {
+        card.classList.remove('completed');
+        if (index === 0) {
+            card.classList.remove('locked');
+        } else {
+            card.classList.add('locked');
+        }
+        card.querySelector('.promise-wrong').classList.add('hidden');
+        card.querySelector('.promise-accepted').classList.add('hidden');
+        card.querySelector('.promise-buttons').style.display = 'flex';
+    });
+
+    document.getElementById('promise-complete').classList.add('hidden');
+
+    // Attach click handlers (clone to avoid duplicate listeners)
+    document.querySelectorAll('.promise-btn').forEach(btn => {
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        newBtn.addEventListener('click', handlePromiseClick);
+    });
+}
+
+function handlePromiseClick(e) {
+    const btn = e.target;
+    const card = btn.closest('.promise-card');
+    const isCorrect = btn.dataset.correct === 'true';
+
+    if (isCorrect) {
+        card.classList.add('completed');
+        card.querySelector('.promise-accepted').classList.remove('hidden');
+        card.querySelector('.promise-wrong').classList.add('hidden');
+        promisesCompleted++;
+
+        // Unlock next card
+        const nextCard = card.nextElementSibling;
+        if (nextCard && nextCard.classList.contains('promise-card')) {
+            setTimeout(() => {
+                nextCard.classList.remove('locked');
+            }, 500);
+        }
+
+        // All done?
+        if (promisesCompleted === 3) {
+            setTimeout(() => {
+                document.getElementById('promise-complete').classList.remove('hidden');
+                createConfetti();
+            }, 800);
+        }
+    } else {
+        const wrongMsg = card.querySelector('.promise-wrong');
+        wrongMsg.classList.remove('hidden');
+
+        wrongMsg.style.animation = 'none';
+        wrongMsg.offsetHeight;
+        wrongMsg.style.animation = null;
+    }
+}
+
+// ==================== HUG DAY - Reaction Game ====================
+let hugMeter = 0;
+let hugGameActive = false;
+let hugGlowInterval = null;
+let hugDrainInterval = null;
+let currentGlowingBtn = null;
+
+function initHugDay() {
+    hugMeter = 0;
+    hugGameActive = true;
+    updateHugMeter();
+
+    document.getElementById('hug-complete').classList.add('hidden');
+
+    const buttons = document.querySelectorAll('.hug-btn');
+    buttons.forEach(btn => {
+        btn.classList.remove('glowing', 'wrong-tap');
+
+        // Clone to clear old listeners
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+
+        newBtn.addEventListener('click', handleHugTap);
+        newBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleHugTap(e);
+        }, { passive: false });
+    });
+
+    // Start glow cycle
+    startGlowCycle();
+
+    // Start drain - meter slowly goes down
+    hugDrainInterval = setInterval(() => {
+        if (!hugGameActive) return;
+        hugMeter = Math.max(0, hugMeter - 1.5);
+        updateHugMeter();
+    }, 200);
+}
+
+function startGlowCycle() {
+    if (hugGlowInterval) clearInterval(hugGlowInterval);
+
+    setRandomGlow();
+    hugGlowInterval = setInterval(() => {
+        if (!hugGameActive) return;
+        setRandomGlow();
+    }, 1200);
+}
+
+function setRandomGlow() {
+    const buttons = document.querySelectorAll('.hug-btn');
+    buttons.forEach(b => b.classList.remove('glowing'));
+
+    const index = Math.floor(Math.random() * 3);
+    buttons[index].classList.add('glowing');
+    currentGlowingBtn = buttons[index];
+}
+
+function handleHugTap(e) {
+    if (!hugGameActive) return;
+
+    const btn = e.target.closest('.hug-btn');
+    if (!btn) return;
+
+    if (btn.classList.contains('glowing')) {
+        // Correct tap!
+        hugMeter = Math.min(100, hugMeter + 8);
+        updateHugMeter();
+
+        btn.classList.remove('glowing');
+
+        // Immediately pick a new glowing button
+        setRandomGlow();
+        if (hugGlowInterval) clearInterval(hugGlowInterval);
+        hugGlowInterval = setInterval(() => {
+            if (!hugGameActive) return;
+            setRandomGlow();
+        }, 1200);
+
+        if (hugMeter >= 100) {
+            hugGameComplete();
+        }
+    } else {
+        // Wrong button - penalty
+        hugMeter = Math.max(0, hugMeter - 5);
+        updateHugMeter();
+
+        btn.classList.add('wrong-tap');
+        setTimeout(() => btn.classList.remove('wrong-tap'), 300);
+    }
+}
+
+function updateHugMeter() {
+    const fill = document.getElementById('hug-meter-fill');
+    const label = document.getElementById('hug-meter-label');
+    if (fill && label) {
+        fill.style.width = hugMeter + '%';
+        label.textContent = Math.round(hugMeter) + '%';
+    }
+}
+
+function hugGameComplete() {
+    hugGameActive = false;
+    stopHugGame();
+
+    document.getElementById('hug-complete').classList.remove('hidden');
+    createConfetti();
+}
+
+function stopHugGame() {
+    hugGameActive = false;
+    if (hugGlowInterval) {
+        clearInterval(hugGlowInterval);
+        hugGlowInterval = null;
+    }
+    if (hugDrainInterval) {
+        clearInterval(hugDrainInterval);
+        hugDrainInterval = null;
+    }
+}
+
+// ==================== Dev Controls ====================
+function initDevControls() {
+    const toggleBtn = document.getElementById('toggle-dev');
+    const devPanel = document.getElementById('dev-panel');
+    const dateOverride = document.getElementById('date-override');
+
+    if (!toggleBtn || !devPanel || !dateOverride) return;
+
+    toggleBtn.addEventListener('click', () => {
+        devPanel.classList.toggle('hidden');
+    });
+
+    dateOverride.addEventListener('change', () => {
+        showDay(getCurrentDay());
+    });
+}
 
 // ==================== Initialize ====================
 document.addEventListener('DOMContentLoaded', () => {
+    initDevControls();
     createFloatingHearts();
     showDay(getCurrentDay());
 
@@ -374,4 +573,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Restart game button
     document.getElementById('restart-btn').addEventListener('click', initMemoryGame);
+
+    // Close promise modal
+    document.getElementById('close-promise')?.addEventListener('click', () => {
+        document.getElementById('promise-complete').classList.add('hidden');
+    });
+
+    // Close hug modal
+    document.getElementById('close-hug')?.addEventListener('click', () => {
+        document.getElementById('hug-complete').classList.add('hidden');
+    });
 });

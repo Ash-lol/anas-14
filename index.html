@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <!-- Production: Dev controls removed -->
+
 
     <!-- Floating Hearts Background -->
     <div id="hearts-bg"></div>
@@ -135,7 +135,94 @@
         </div>
     </section>
 
-    <!-- ==================== PLACEHOLDER DAYS (Feb 11-14) ==================== -->
+    <!-- ==================== PROMISE DAY (Feb 11) ==================== -->
+    <section id="promise-day" class="day-section hidden">
+        <div class="content-wrapper promise-content">
+            <h1 class="day-title">🤞 Promise Day 🤞</h1>
+            <p class="happy-message">HEYYYY welcome back Bebimaus!! Mwah! ❤️</p>
+
+            <div class="parchment">
+                <div class="parchment-inner">
+                    <h2 class="parchment-title">⚡ The Solemn Promises ⚡</h2>
+
+                    <div class="promise-card" id="promise-1">
+                        <p class="promise-text">1. Will you solemnly swear that u will be up to no good, with me?</p>
+                        <div class="promise-buttons">
+                            <button class="btn yes-btn promise-btn" data-correct="true">Yes I promise</button>
+                            <button class="btn no-btn promise-btn" data-correct="false">I don't manage mischief</button>
+                        </div>
+                        <p class="promise-wrong hidden">You are so cute. Wrong answer 😌</p>
+                        <p class="promise-accepted hidden">✓ Mischief managed! 🗺️</p>
+                    </div>
+
+                    <div class="promise-card locked" id="promise-2">
+                        <p class="promise-text">2. Will u promise to defeat more level 90 and 100 bosses with me in
+                            Fantasy Life?</p>
+                        <div class="promise-buttons">
+                            <button class="btn yes-btn promise-btn" data-correct="true">Yes we're amazing</button>
+                            <button class="btn no-btn promise-btn" data-correct="false">Level 80 is high enough</button>
+                        </div>
+                        <p class="promise-wrong hidden">hahaha good one. Wrong answer 😂</p>
+                        <p class="promise-accepted hidden">✓ Boss slayers! ⚔️</p>
+                    </div>
+
+                    <div class="promise-card locked" id="promise-3">
+                        <p class="promise-text">3. Will u promise to bake hedgehog cupcakes with me when we are together
+                            in person?</p>
+                        <div class="promise-buttons">
+                            <button class="btn yes-btn promise-btn" data-correct="true">Yes</button>
+                            <button class="btn no-btn promise-btn" data-correct="false">Not no</button>
+                        </div>
+                        <p class="promise-wrong hidden">Sneaky answer 😏 but still wrong!</p>
+                        <p class="promise-accepted hidden">✓ Baker squad! 🧁</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Promise Complete Modal -->
+            <div id="promise-complete" class="modal hidden">
+                <div class="modal-content">
+                    <h2>🎉⚡</h2>
+                    <p class="win-message">Ayeee! Happy Promise Day Anassu! 💝</p>
+                    <p class="sub-message">I hope u are gonna slay/have slayed the stoopid exam!</p>
+                    <button id="close-promise" class="btn">💕</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== HUG DAY (Feb 12) ==================== -->
+    <section id="hug-day" class="day-section hidden">
+        <div class="content-wrapper hug-content">
+            <h1 class="day-title">🫂 Hug Day 🫂</h1>
+            <p class="instruction">Tap the glowing button to fill the hug meter! Be fast! 💨</p>
+
+            <div id="hug-meter-container">
+                <div id="hug-meter-bar">
+                    <div id="hug-meter-fill"></div>
+                </div>
+                <span id="hug-meter-label">0%</span>
+            </div>
+
+            <div id="hug-buttons">
+                <button class="hug-btn" id="hug-btn-1">🤗</button>
+                <button class="hug-btn" id="hug-btn-2">🤗</button>
+                <button class="hug-btn" id="hug-btn-3">🤗</button>
+            </div>
+        </div>
+
+        <!-- Hug Complete Modal -->
+        <div id="hug-complete" class="modal hidden">
+            <div class="modal-content hug-modal-content">
+                <img src="duck-hug.jpeg" alt="Duck Hug" class="hug-reward-img">
+                <p class="win-message">Happy Hug Day Anasbebi!! 🫂💖</p>
+                <p class="sub-message">I so wanna give you a tight hug and squeeze u and and!! I love you!</p>
+                <button id="close-hug" class="btn">💕</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PLACEHOLDER DAYS (Feb 13-14) ==================== -->
     <section id="placeholder-day" class="day-section hidden">
         <div class="content-wrapper">
             <h1 class="day-title" id="placeholder-title">💕</h1>
