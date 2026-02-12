@@ -363,8 +363,10 @@ body {
 }
 
 .modal-content h2 {
-    font-size: 3rem;
+    font-size: 2.2rem;
     margin-bottom: 20px;
+    word-wrap: break-word;
+    line-height: 1.2;
 }
 
 .win-message {
@@ -866,6 +868,112 @@ body {
 
 .hug-modal-content {
     max-width: 400px;
+}
+
+/* ==================== KISS DAY STYLES ==================== */
+.kiss-content {
+    padding-top: 30px;
+    text-align: center;
+}
+
+#cup-game-area {
+    margin-top: 40px;
+}
+
+.cups-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    height: 120px;
+    position: relative;
+}
+
+.cup-wrapper {
+    position: relative;
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    transition: transform 0.5s ease-in-out;
+}
+
+.cup {
+    font-size: 4rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transition: transform 0.3s ease;
+    /* Inverted cup look */
+    transform: rotate(180deg); 
+}
+
+.cup.lifted {
+    transform: rotate(180deg) translateY(40px);
+}
+
+.cup-item {
+    font-size: 2.5rem;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+#kiss-fail {
+    margin-top: 20px;
+    min-height: 40px;
+}
+
+.skill-issue-text {
+    color: #ff0044;
+    font-weight: 700;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(255, 0, 68, 0.4);
+    animation: skill-issue-pulse 0.5s infinite alternate;
+}
+
+/* Kiss Animation Overlay */
+#kiss-animation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.big-kiss {
+    font-size: 8rem;
+    animation: kiss-zoom 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.final-love-text {
+    font-size: 3rem;
+    color: #ff4081;
+    margin-top: 20px;
+    font-family: 'Dancing Script', cursive;
+    opacity: 0;
+    animation: fade-in-up 1s ease 0.5s forwards;
+}
+
+@keyframes kiss-zoom {
+    0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ==================== PLACEHOLDER DAYS ==================== */

@@ -52,6 +52,9 @@ function showDay(day) {
             initHugDay();
             break;
         case 13:
+            sectionId = 'kiss-day';
+            initKissDay();
+            break;
         case 14:
             sectionId = 'placeholder-day';
             updatePlaceholder(day);
@@ -541,6 +544,179 @@ function stopHugGame() {
         clearInterval(hugDrainInterval);
         hugDrainInterval = null;
     }
+}
+
+// ==================== KISS DAY - Cup Shuffle ====================
+let cupGameActive = false;
+let cupItems = []; // Will be set in init
+let cupPositions = [0, 1, 2]; 
+let isShuffling = false;
+let winningCupId = 1; // Default, will randomize
+
+function initKissDay() {
+    cupGameActive = false;
+    cupPositions = [0, 1, 2];
+    
+    // Randomize the winner
+    winningCupId = Math.floor(Math.random() * 3);
+    
+    // Reset UI
+    document.querySelectorAll('.cup-wrapper').forEach((cup, index) => {
+        cup.style.transform = `translateX(0)`;
+        cup.onclick = () => handleCupClick(index);
+        const item = cup.querySelector('.cup-item');
+        const cupImg = cup.querySelector('.cup');
+        
+        // Set content based on random winner
+        if (index === winningCupId) {
+            item.textContent = '💋';
+        } else {
+            item.textContent = '🍐';
+        }
+        
+        item.classList.add('hidden');
+        cupImg.classList.remove('lifted');
+    });
+
+    document.getElementById('start-cup-game').style.display = 'inline-block';
+    document.getElementById('kiss-fail').classList.add('hidden');
+    document.getElementById('kiss-proposal-modal').classList.add('hidden');
+    document.getElementById('kiss-rejected-modal').classList.add('hidden');
+    document.getElementById('kiss-animation-overlay').classList.add('hidden');
+    
+    // Attach listeners
+    document.getElementById('start-cup-game').onclick = startCupShuffle;
+    document.getElementById('accept-kiss-btn').onclick = startKissAnimation;
+    document.getElementById('reject-kiss-btn').onclick = () => {
+        document.getElementById('kiss-proposal-modal').classList.add('hidden');
+        document.getElementById('kiss-rejected-modal').classList.remove('hidden');
+    };
+}
+
+function startCupShuffle() {
+    if (isShuffling) return;
+    isShuffling = true;
+    cupGameActive = false;
+    document.getElementById('kiss-fail').classList.add('hidden');
+    document.getElementById('start-cup-game').style.display = 'none';
+
+    // 1. Reveal items
+    document.querySelectorAll('.cup-wrapper').forEach(wrapper => {
+        wrapper.querySelector('.cup').classList.add('lifted');
+        wrapper.querySelector('.cup-item').classList.remove('hidden');
+    });
+
+    // 2. Hide items & Start Shuffle loop
+    setTimeout(() => {
+        document.querySelectorAll('.cup-wrapper').forEach(wrapper => {
+            wrapper.querySelector('.cup').classList.remove('lifted');
+        });
+
+        setTimeout(() => {
+            // Hide items to prevent peeking
+            document.querySelectorAll('.cup-item').forEach(i => i.classList.add('hidden'));
+            performShuffleSteps(10); // 10 shuffles
+        }, 500);
+    }, 1500);
+}
+
+function performShuffleSteps(count) {
+    if (count <= 0) {
+        // End shuffle
+        isShuffling = false;
+        cupGameActive = true;
+        return;
+    }
+
+    // Pick 2 distinct indices (0, 1, 2)
+    let idx1 = Math.floor(Math.random() * 3);
+    let idx2 = (idx1 + 1 + Math.floor(Math.random() * 2)) % 3;
+
+    // Swap visual positions
+    swapCups(idx1, idx2);
+
+    // Schedule next shuffle
+    setTimeout(() => performShuffleSteps(count - 1), 600);
+}
+
+function swapCups(id1, id2) {
+    // Current positions (0: Left, 1: Mid, 2: Right)
+    let pos1 = cupPositions[id1];
+    let pos2 = cupPositions[id2];
+
+    // Swap logic
+    cupPositions[id1] = pos2;
+    cupPositions[id2] = pos1;
+
+    // Apply transform based on new position relative to initial
+    // Initial is: 0 (0px), 1 (0px), 2 (0px) but they are laid out by flexbox normally.
+    // Instead of complex absolute calculations, we'll shift them relative to their start.
+    // Actually, easier:
+    // Slot 0: 0px
+    // Slot 1: 100px (approx 80px width + 20px gap)
+    // Slot 2: 200px
+    // Wait, flex layout makes this relative.
+    // Let's assume standard width (80px) + gap (20px) = 100px shift per slot.
+    
+    updateCupTransforms();
+}
+
+function updateCupTransforms() {
+    const slotSize = 100; // 80px width + 20px gap
+    
+    // cupPositions[id] tells us which slot (0, 1, 2) the cup with 'id' is currently in.
+    // But physically, cup with id=0 starts at slot 0.
+    // If cupPositions[0] is now 2, it needs to move +200px.
+    
+    document.querySelectorAll('.cup-wrapper').forEach((wrapper, id) => {
+        const currentSlot = cupPositions[id];
+        const initialSlot = id; // id 0 starts at 0, id 1 at 1...
+        
+        const shiftX = (currentSlot - initialSlot) * slotSize;
+        wrapper.style.transform = `translateX(${shiftX}px)`;
+    });
+}
+
+function handleCupClick(clickedId) {
+    if (!cupGameActive || isShuffling) return;
+
+    const wrapper = document.getElementById(`cup-${clickedId}`);
+    const cup = wrapper.querySelector('.cup');
+    const item = wrapper.querySelector('.cup-item');
+
+    // Reveal
+    cup.classList.add('lifted');
+    item.classList.remove('hidden');
+
+    // Check win
+    if (clickedId === winningCupId) { // Check against randomized winner
+        // WIN
+        cupGameActive = false;
+        setTimeout(() => {
+            document.getElementById('kiss-proposal-modal').classList.remove('hidden');
+            createConfetti();
+        }, 800);
+    } else {
+        // FAIL
+        const failText = document.getElementById('kiss-fail');
+        failText.classList.remove('hidden');
+        
+        // Reset after delay and RESTART
+        setTimeout(() => {
+            cup.classList.remove('lifted');
+            item.classList.add('hidden');
+            failText.classList.add('hidden');
+            
+            // Restart the game automatically
+            startCupShuffle();
+        }, 1500);
+    }
+}
+
+function startKissAnimation() {
+    document.getElementById('kiss-proposal-modal').classList.add('hidden');
+    document.getElementById('kiss-animation-overlay').classList.remove('hidden');
+    createConfetti();
 }
 
 // ==================== Dev Controls ====================

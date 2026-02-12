@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+
 
 
     <!-- Floating Hearts Background -->
@@ -218,6 +218,63 @@
                 <p class="win-message">Happy Hug Day Anasbebi!! 🫂💖</p>
                 <p class="sub-message">I so wanna give you a tight hug and squeeze u and and!! I love you!</p>
                 <button id="close-hug" class="btn">💕</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== KISS DAY (Feb 13) ==================== -->
+    <section id="kiss-day" class="day-section hidden">
+        <div class="content-wrapper kiss-content">
+            <h1 class="day-title">💋 Kiss Day 💋</h1>
+            <p class="instruction">Follow the cup with the kiss! 💋</p>
+
+            <div id="cup-game-area">
+                <div class="cups-container">
+                    <div class="cup-wrapper" id="cup-0" onclick="handleCupClick(0)">
+                        <div class="cup">🥤</div>
+                        <div class="cup-item hidden">🍐</div>
+                    </div>
+                    <div class="cup-wrapper" id="cup-1" onclick="handleCupClick(1)">
+                        <div class="cup">🥤</div>
+                        <div class="cup-item hidden">💋</div>
+                    </div>
+                    <div class="cup-wrapper" id="cup-2" onclick="handleCupClick(2)">
+                        <div class="cup">🥤</div>
+                        <div class="cup-item hidden">🍐</div>
+                    </div>
+                </div>
+                <button id="start-cup-game" class="btn">Start Game</button>
+            </div>
+
+            <div id="kiss-fail" class="hidden">
+                <p class="skill-issue-text">Skill Issue, Try Again!</p>
+            </div>
+
+            <!-- Pre-Win Modal (Accept Kiss?) -->
+            <div id="kiss-proposal-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h2>Ayeee congratulations!! 🎉</h2>
+                    <p class="win-message">Happy Kiss Day Anassi!</p>
+                    <p class="sub-message">Would u like to accept a digital kiss?</p>
+                    <div class="proposal-buttons">
+                        <button id="accept-kiss-btn" class="btn yes-btn">Yes</button>
+                        <button id="reject-kiss-btn" class="btn no-btn">No</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rejected Modal -->
+            <div id="kiss-rejected-modal" class="modal hidden">
+                <div class="modal-content">
+                    <p class="win-message">Got it got it! XD</p>
+                    <button class="btn" onclick="document.getElementById('kiss-rejected-modal').classList.add('hidden')">Close</button>
+                </div>
+            </div>
+
+            <!-- Final Kiss Animation Overlay -->
+            <div id="kiss-animation-overlay" class="hidden">
+                <div class="big-kiss">💋</div>
+                <p class="final-love-text">I love you! ❤️</p>
             </div>
         </div>
     </section>
