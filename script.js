@@ -56,8 +56,8 @@ function showDay(day) {
             initKissDay();
             break;
         case 14:
-            sectionId = 'placeholder-day';
-            updatePlaceholder(day);
+            sectionId = 'valentine-day';
+            initValentineDay();
             break;
         default:
             sectionId = 'not-yet';
@@ -719,6 +719,124 @@ function startKissAnimation() {
     createConfetti();
 }
 
+// ==================== VALENTINE'S DAY (Feb 14) ====================
+// Visual Novel Data
+const vnChunks = [
+    "It is 14th of February in 2026. Man, time went by super fast, especially the last couple of years, and the last year in particular.",
+    "It doesn't feel very long ago when I was not sure how I should ask you to watch Tangled with me on the 14th, because we hadn't yet confessed to each other at that point.",
+    "Not to mention, I also didn't know how to wish you a happy Valentines' day without making it obviously romantic.",
+    "I remember I was travelling in a taxi to the airport, while looking up the history and the traditions of the Valentine's day on wikipedia, hoping I can get more context of it and write a proper Valentine's message to you before you woke up that morning.",
+    "I am glad everything went smoothly, and when you woke up and responded to it before my flight, it made my day even better XD.",
+    "Here we are now, in 2026, both you and me having been through so many things, both good and difficult, individually and together.",
+    "I love you. You make my days brighter by simply showing up and being the beautiful person that you so effortlessy are.",
+    "And I am pretty happy that I can express my feelings as I want to this year, ehe. Happy Valentine's day, my dear Anastasia! 💖",
+    "I have said this over and over but, I am proud of us, let's continue being here for and with each other though thick and thin!",
+    "Like u once said, we chose to play this on hard mode but I feel that is so worth it. I love you, again! 💞"
+];
+
+let vnIndex = 0;
+let vnActive = false;
+let isTyping = false;
+let typeInterval = null;
+
+function initValentineDay() {
+    vnIndex = 0;
+    vnActive = false;
+    isTyping = false;
+    
+    document.getElementById('start-valentine').style.display = 'block';
+    document.getElementById('vn-container').classList.add('hidden');
+    document.getElementById('final-surprise').classList.add('hidden');
+    document.getElementById('music-player').innerHTML = '';
+
+    document.getElementById('open-letter-btn').onclick = startValentineJourney;
+    
+    // VN click handler
+    document.querySelector('.vn-textbox').onclick = handleNextText;
+    
+    // Full Letter Logic
+    document.getElementById('show-full-letter-btn').onclick = () => {
+        const fullText = vnChunks.join('\n\n');
+        document.getElementById('full-letter-text').textContent = fullText;
+        document.getElementById('letter-modal').classList.remove('hidden');
+    };
+
+    document.getElementById('close-letter-btn').onclick = () => {
+        document.getElementById('letter-modal').classList.add('hidden');
+    };
+}
+
+function startValentineJourney() {
+    vnActive = true;
+    document.getElementById('start-valentine').style.display = 'none';
+    document.getElementById('vn-container').classList.remove('hidden');
+    
+    // Play Audio (Local File)
+    const playerContainer = document.getElementById('music-player');
+    
+    // Create audio element
+    playerContainer.innerHTML = '<audio id="bg-music" loop autoplay src="those-eyes.mp3"></audio>';
+    
+    const audio = document.getElementById('bg-music');
+    audio.volume = 0.5; // Set volume to 50%
+    
+    // Attempt play
+    audio.play().catch(error => {
+        console.log("Audio play failed:", error);
+    });
+    
+    showText(0);
+}
+
+function showText(index) {
+    if (index >= vnChunks.length) {
+        finishValentine();
+        return;
+    }
+    
+    vnIndex = index;
+    const textBox = document.getElementById('vn-text');
+    textBox.textContent = '';
+    const text = vnChunks[index];
+    
+    isTyping = true;
+    let charIndex = 0;
+    document.getElementById('vn-indicator').classList.add('hidden');
+    
+    if (typeInterval) clearInterval(typeInterval);
+    typeInterval = setInterval(() => {
+        textBox.textContent += text.charAt(charIndex);
+        charIndex++;
+        if (charIndex >= text.length) {
+            clearInterval(typeInterval);
+            isTyping = false;
+            document.getElementById('vn-indicator').classList.remove('hidden');
+        }
+    }, 30); // Typing speed
+}
+
+function handleNextText() {
+    if (!vnActive) return;
+    
+    if (isTyping) {
+        // Instant complete
+        clearInterval(typeInterval);
+        document.getElementById('vn-text').textContent = vnChunks[vnIndex];
+        isTyping = false;
+        document.getElementById('vn-indicator').classList.remove('hidden');
+    } else {
+        // Next chunk
+        showText(vnIndex + 1);
+    }
+}
+
+function finishValentine() {
+    vnActive = false;
+    document.getElementById('vn-container').classList.add('hidden');
+    document.getElementById('final-surprise').classList.remove('hidden');
+    createConfetti(); // Celebration!
+}
+
 // ==================== Dev Controls ====================
 function initDevControls() {
     const toggleBtn = document.getElementById('toggle-dev');
@@ -726,6 +844,11 @@ function initDevControls() {
     const dateOverride = document.getElementById('date-override');
 
     if (!toggleBtn || !devPanel || !dateOverride) return;
+
+    // Show controls ONLY on/after Feb 14
+    if (getCurrentDay() >= 14) {
+        document.getElementById('dev-controls').classList.remove('hidden');
+    }
 
     toggleBtn.addEventListener('click', () => {
         devPanel.classList.toggle('hidden');
@@ -735,6 +858,7 @@ function initDevControls() {
         showDay(getCurrentDay());
     });
 }
+
 
 // ==================== Initialize ====================
 document.addEventListener('DOMContentLoaded', () => {

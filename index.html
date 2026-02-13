@@ -279,13 +279,49 @@
         </div>
     </section>
 
-    <!-- ==================== PLACEHOLDER DAYS (Feb 13-14) ==================== -->
-    <section id="placeholder-day" class="day-section hidden">
-        <div class="content-wrapper">
-            <h1 class="day-title" id="placeholder-title">💕</h1>
-            <div class="placeholder-content">
-                <p class="placeholder-text">✨ To be updated ✨</p>
-                <p class="placeholder-sub">Come back soon! 💕</p>
+    <!-- ==================== VALENTINE'S DAY (Feb 14) ==================== -->
+    <section id="valentine-day" class="day-section hidden">
+        <div class="valentine-overlay"></div>
+        <div id="start-valentine">
+            <h1>❤️ A Letter for My Sweet Maus ❤️</h1>
+            <button id="open-letter-btn" class="btn">Open Letter</button>
+        </div>
+
+        <div id="vn-container" class="hidden">
+            <!-- Penguins smiling -->
+            <div class="vn-sprites">
+                <div class="penguin p-left">🐧</div>
+                <div class="heart-pulse">💗</div>
+                <div class="penguin p-right">🐧</div>
+            </div>
+
+            <div class="vn-textbox">
+                <p id="vn-text"></p>
+                <div class="vn-controls">
+                    <span id="vn-indicator">▼</span>
+                </div>
+            </div>
+            
+            <!-- Hidden Audio -->
+            <div id="music-player" class="hidden"></div>
+        </div>
+
+        <div id="final-surprise" class="hidden">
+            <div class="final-content">
+                <img src="peng-14.jpg" alt="Penguin Pebble" class="final-img">
+                <p class="pebble-msg">For now, this is all I got, but this pebble is for u! 💕</p>
+                <button id="show-full-letter-btn" class="btn">Reread Full Letter</button>
+            </div>
+        </div>
+
+        <!-- Full Letter Parchment Modal -->
+        <div id="letter-modal" class="modal hidden">
+            <div class="parchment letter-parchment">
+                <div class="parchment-inner">
+                    <h2 class="parchment-title">My Precious Kartoffelkatze</h2>
+                    <div id="full-letter-text"></div>
+                    <button id="close-letter-btn" class="btn">Close</button>
+                </div>
             </div>
         </div>
     </section>
@@ -293,13 +329,31 @@
     <!-- ==================== NOT YET / AFTER ==================== -->
     <section id="not-yet" class="day-section hidden">
         <div class="content-wrapper">
-            <h1 class="day-title">💕 Patience, love! 💕</h1>
+            <h1 class="day-title">💕 Patience, silly! 💕</h1>
             <p class="not-yet-text">The Valentine's week magic starts on February 7th!</p>
             <p class="countdown-text">Come back then! 🌹</p>
         </div>
     </section>
 
     <script src="script.js"></script>
+    <!-- Dev Controls (Public from Feb 14) -->
+    <div id="dev-controls" class="hidden">
+        <button id="toggle-dev">🎁 Memories</button>
+        <div id="dev-panel" class="hidden">
+            <label>Travel back to:</label>
+            <select id="date-override">
+                <option value="auto">Today</option>
+                <option value="7">Feb 7 - Rose Day</option>
+                <option value="8">Feb 8 - Propose Day</option>
+                <option value="9">Feb 9 - Chocolate Day</option>
+                <option value="10">Feb 10 - Teddy Day</option>
+                <option value="11">Feb 11 - Promise Day</option>
+                <option value="12">Feb 12 - Hug Day</option>
+                <option value="13">Feb 13 - Kiss Day</option>
+                <option value="14">Feb 14 - Valentine's Day</option>
+            </select>
+        </div>
+    </div>
 </body>
 
 </html>
